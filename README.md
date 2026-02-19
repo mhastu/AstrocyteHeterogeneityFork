@@ -5,9 +5,21 @@
 1.  Install Anaconda
 2.  Start Anaconda Prompt with Admin rights
 3.  python -V # check python version
-4.  conda install python=3.9.13 # install specific python version
+4.  conda install python=3.9.13 # install specific python version (my pip only allowed 3.9.23, which also works)
 5.  python -c "import numpy; print(numpy.version.version)" # check numpy version
 6.  conda install -c conda-forge numpy=1.23.5 # install specific numpy version
+7.  install additional requirements:
+```
+matplotlib
+pandas
+pymatreader
+scikit-learn
+seaborn
+matlabengine==24.1.4
+pylatex
+kneed
+yellowbrick
+```
 
 **Generating data files (AstrocyteHeterogeneity\_00\_data)**
 
