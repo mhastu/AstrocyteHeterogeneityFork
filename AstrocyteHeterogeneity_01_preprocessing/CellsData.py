@@ -36,10 +36,10 @@ class CellsData:
         print(self.path)
         self.dataset = dataset
         print("Loading Data...")
-        with open(os_p.join(path + "diameterData.txt")) as data:
+        with open(os_p.join(path + "diameterData.csv")) as data:
             self.diaData = pd.read_csv(data)
 
-        with open(path + "positionData.txt") as data:
+        with open(path + "positionData.csv") as data:
             self.BranchingPointData = pd.read_csv(data)
         #display(self.BranchingPointData)
         self.FPoints = read_mat(os_p.join(path, "vFilamentPoints.mat"))["vFilamentsPoints"]

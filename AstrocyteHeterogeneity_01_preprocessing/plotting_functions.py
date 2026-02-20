@@ -968,7 +968,7 @@ def hide():
     # Ellipsoids = True
     # reload_features = False 
     # threshold = None
-    # path = os_p.abspath("../..")
+    # path = os_p.abspath(".")
 
     # #results_path = os_p.join(os_p.abspath(".."),  loc, "United")
 

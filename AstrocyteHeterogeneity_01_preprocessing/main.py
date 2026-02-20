@@ -74,7 +74,7 @@ def gen_CellInfo(datasets, FeatureVectorName: str, loc: str = "FeatureVectors",
 
         Results in storing the required pandas Dataframes in folder to be taken up by Main Class"""
     
-    path = os_p.abspath("../..")
+    path = os_p.abspath(".")
     
     results_path = os_p.join(os_p.abspath(".."),  loc, "United")
     
@@ -218,7 +218,7 @@ class Main:
     def load_datasets(self, datasets, **kwargs):
         self.datasets_dict = {}
 
-        path = os_p.abspath("../../")
+        path = os_p.abspath(".")
             
         for dataset in datasets:
             self.datasets_dict[dataset] = self.H00 = CellsData(os_p.join(path,  dataset + "\\"), dataset,
@@ -568,7 +568,7 @@ class Main:
         """Prints the first n cells of a dataset"""
         geometry_options = {"right": "2cm", "left": "2cm"}
         width = r'0.7\textwidth'
-        path = os_p.abspath("../../")
+        path = os_p.abspath(".")
 
         for dataset in dataset_list:
             cellsdata = CellsData(os_p.join(path,  f"{dataset}\\"),dataset , reload_features= False)
