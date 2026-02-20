@@ -1,6 +1,11 @@
 # vs code
 settings.json
 
+# data files
+diameterData.csv
+positionData.csv
+branchData.mat
+
 # dataset files
 dataset_C10.mat
 dataset_C11.mat
