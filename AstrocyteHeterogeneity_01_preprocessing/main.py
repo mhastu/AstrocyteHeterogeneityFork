@@ -74,7 +74,7 @@ def gen_CellInfo(datasets, FeatureVectorName: str, loc: str = "FeatureVectors",
 
         Results in storing the required pandas Dataframes in folder to be taken up by Main Class"""
     
-    path = os_p.abspath(".")
+    path = os_p.abspath("../datasets/")
     
     results_path = os_p.join(os_p.abspath(".."),  loc, "United")
     
@@ -86,7 +86,7 @@ def gen_CellInfo(datasets, FeatureVectorName: str, loc: str = "FeatureVectors",
     
     for set in datasets:
         print(os_p.join(path,  set ))
-        cells = CellsData(os_p.join(path,  set + "//"), set, **kwargs)
+        cells = CellsData(os_p.join(path,  set + "/"), set, **kwargs)
         
         cells_used += cells.cells_used
         cells_total += cells.cells_total

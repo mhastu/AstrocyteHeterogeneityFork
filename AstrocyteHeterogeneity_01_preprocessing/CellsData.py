@@ -36,14 +36,15 @@ class CellsData:
         print(self.path)
         self.dataset = dataset
         print("Loading Data...")
+        # pymatreader ignores matlab tables, so we have to save them as csv in matlab first, then load them here:
         with open(os_p.join(path + "diameterData.csv")) as data:
             self.diaData = pd.read_csv(data)
 
         with open(path + "positionData.csv") as data:
             self.BranchingPointData = pd.read_csv(data)
         #display(self.BranchingPointData)
-        self.FPoints = read_mat(os_p.join(path, "vFilamentPoints.mat"))["vFilamentsPoints"]
-        self.FEdges = read_mat(os_p.join(path,"vFilamentEdges.mat"))["vFilamentsEdges"]
+        self.FPoints = read_mat(os_p.join(path, "matlab_and_excel_data.mat"))["vFilamentsPoints"]
+        self.FEdges = read_mat(os_p.join(path,"matlab_and_excel_data.mat"))["vFilamentsEdges"]
 
         self.cells = {}
         for cellID in range(len(self.FPoints)):

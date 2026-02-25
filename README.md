@@ -23,26 +23,23 @@ yellowbrick
 
 **Generating data files (AstrocyteHeterogeneity\_00\_data)**
 
-1.  Put following files in one folder:  
-    astro\_geometry.m, dataset\_\[_Name of dataset_\].mat, matlab\_and\_excel\_data.mat
-2.  Execute following lines in MATLAB:  
-    —> load('dataset\_\[_Name of dataset_\].mat')  
-    —> writetable(positionData, 'positionData.csv')  
-    —> writetable(diameterData, 'diameterData.csv')  
+1.  Execute following lines in MATLAB:  
+    —> load('../datasets/\[_dataset name_\]/matlab\_and\_excel\_data.mat')  
+    —> writetable(positionData, '../datasets/\[_dataset name_\]/positionData.csv')  % pymatreader can't read tables, so we need a csv for that  
+    —> writetable(diameterData, '../datasets/\[_dataset name_\]/diameterData.csv')  % pymatreader can't read tables, so we need a csv for that  
     —> astro\_geometry()  
     Window opens: Select dataset same as loaded in the first line  
     —> Give the dataset name: _branchData_  
     —> Give the cell ID (maximum ID is 418): \[_cell ID_\] e.g.: _144_  
     —> Give extra information for the export name (name will be "cell\_<dataset>\_<number>\_<your input here>": \[_Enter_\]  
-    : MATLAB generates _branchData.mat_ file in folder cell\_branchData\_\[_cell ID_\]
+    : MATLAB generates _branchData.mat_ file in directory cell\_branchData\_\[_cell ID_\]  
+    —> move this new directory into ../datasets/\[_dataset name_\]
 
 **Preprocessing of the astrocyte reconstructions (AstrocyteHeterogeneity\_01\_preprocessing)**
 
-1.  Put following files in the preprocessing folder:  
-    dataset\_\[_Name of dataset_\].mat, matlab\_and\_excel\_data.mat
-2.  Execute cells in the _Workspace.ipynb_ notebook
-3.  The function _main.gen\_CellInfo_ generates .csv file with features
-4.  The function _main\_Test2.plot\_FeatureVector_ can be use to plot the features
+1.  Execute cells in the _Workspace.ipynb_ notebook
+2.  The function _main.gen\_CellInfo_ generates .csv file with features
+3.  The function _main\_Test2.plot\_FeatureVector_ can be use to plot the features
 
 **Classification of the astrocyte morphologies (AstrocyteHeterogeneity\_02\_classification)**
 
