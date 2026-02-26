@@ -1,0 +1,4 @@
+[submodule "AstrocyteHeterogeneity_04_simulation/SingleCellModel_Python-MultiCompartmentModel_With_MorphologyData"]
+	path = AstrocyteHeterogeneity_04_simulation/SingleCellModel_Python-MultiCompartmentModel_With_MorphologyData
+	url = git@github.com:kerstinlenk/SingleCellModel_Python.git
+	branch = MultiCompartmentModel_With_MorphologyData_mhas
