@@ -21,6 +21,9 @@ import seaborn as sns
 
 import os.path as os_p
 
+from Cell import Cell
+from CellsData import CellsData
+
 #%%
 def calc_bin_width(data) -> float:
     bin_width = (max(data) - min(data)) / np.sqrt(len(data))
@@ -215,7 +218,7 @@ def plot_circle_3d(center, diameter, ax):
 
     ax.plot_surface(x, y, z, alpha = 0.5)
     
-def plot_cell(ax, cell, color = "r", mode = "rough", plot_ell = False, plot_circ = False, Annotate = False, percent_points = 0.8):
+def plot_cell(ax, cell: Cell, color = "r", mode = "rough", plot_ell = False, plot_circ = False, Annotate = False, percent_points = 0.8):
     
     if mode != "rough" and mode != "fine" and mode != "scatter":
         print("please input accepted mode like 'rough', 'fine' or 'scatter'")
@@ -694,16 +697,23 @@ def fisher(main, fischer_matrix, fisher_scores):
     fig_fishermatrix.savefig("./ResultPlots_" + main.Type + "/FisherInfoMatrix_" + main.scaler +".png")
     fig_fisherscores.savefig("./ResultPlots_" + main.Type + "/FisherInfoScores_" + main.scaler +".png")    
 
-def MVEE_Results(main): 
-    random_cell = random.sample(main.cells.cells.items(), 1)
-    #random_cell = main.cells.cells[85]
-    random_cell[0][1]._get_ellipsoid()
+def MVEE_Results(datasets: list[str], **kwargs):
+    path = os_p.abspath("../datasets/")
+    for dataset in datasets:
+        # CellsData needs FeatureVector.csv to be present
+        # (even though we don't need features here)
+        cells = CellsData(os_p.join(path,  dataset + "/"),
+                          dataset,
+                          Features_to_use = [False, False, False, False],
+                          Ellipsoids = True,
+                          **kwargs).cells
+        random_cell_id, random_cell = random.choice(list(cells.items()))
 
-    fig = plt.figure(figsize = (8,8))
-    plot_cell_rot(fig, random_cell[0][1])
-    fig.suptitle(f"Cell {random_cell[0][0]} with bounding ellipsoid")
-    fig.tight_layout()
-    fig.savefig("./ResultPlots_" + main.Type + "/MVEE_CellRot")
+        fig = plt.figure(figsize = (8,8))
+        plot_cell_rot(fig, random_cell)
+        fig.suptitle(f"Cell {random_cell_id} with bounding ellipsoid")
+        fig.tight_layout()
+    fig.savefig("./ResultPlots_" + dataset + "/MVEE_CellRot")
 
 def EdgeCellRemoval(main): #PLT FKT
     #Methods figure--------------------

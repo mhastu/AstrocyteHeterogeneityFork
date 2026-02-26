@@ -46,7 +46,7 @@ class CellsData:
         self.FPoints = read_mat(os_p.join(path, "matlab_and_excel_data.mat"))["vFilamentsPoints"]
         self.FEdges = read_mat(os_p.join(path,"matlab_and_excel_data.mat"))["vFilamentsEdges"]
 
-        self.cells = {}
+        self.cells = {}  # type: dict[int, Cell]
         for cellID in range(len(self.FPoints)):
             cells_to_delete = []
             if len(self.FPoints[cellID]) <= 3: #Delete Cells with less than 2 entries

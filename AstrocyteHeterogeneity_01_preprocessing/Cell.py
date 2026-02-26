@@ -1,12 +1,6 @@
 #%%
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import plotting_functions as fkt
-from matplotlib.collections import LineCollection
-from matplotlib.colors import ListedColormap, BoundaryNorm    
-from mpl_toolkits.mplot3d import Axes3D
-from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 from scipy.spatial.transform import Rotation as R
 
@@ -164,7 +158,7 @@ class Cell:
                 
                 self.fine_branches[i+1] = np.vstack((self.points[mergepoint], self.points[startpoint:endpoint, :]))
                 self.rough_branches[i+1] = self.BranchingPointsData.loc[self.BranchingPointsData["corresponding Index"] == mergepoint].copy()
-                self.rough_branches[i+1] = self.rough_branches[i+1].append(self.BranchingPointsData.loc[(self.BranchingPointsData["corresponding Index"] <= endpoint) & (self.BranchingPointsData["corresponding Index"] >= startpoint)])
+                self.rough_branches[i+1] = pd.concat([self.rough_branches[i+1], self.BranchingPointsData.loc[(self.BranchingPointsData["corresponding Index"] <= endpoint) & (self.BranchingPointsData["corresponding Index"] >= startpoint)]], ignore_index=True)
             else:
                 pass
 
@@ -191,7 +185,7 @@ class Cell:
 
             self.fine_branches[i+1] = np.vstack((self.points[mergepoint], self.points[startpoint:endpoint, :]))
             self.rough_branches[i+1] = self.BranchingPointsData.loc[self.BranchingPointsData["corresponding Index"] == mergepoint].copy()
-            self.rough_branches[i+1] = self.rough_branches[i+1].append(self.BranchingPointsData.loc[(self.BranchingPointsData["corresponding Index"] <= endpoint) & (self.BranchingPointsData["corresponding Index"] >= startpoint)])
+            self.rough_branches[i+1] = pd.concat([self.rough_branches[i+1], self.BranchingPointsData.loc[(self.BranchingPointsData["corresponding Index"] <= endpoint) & (self.BranchingPointsData["corresponding Index"] >= startpoint)]], ignore_index=True)
 
     def _connect_Datasets(self):
         """Function that matches the branching to the fine point data for connection information"""
