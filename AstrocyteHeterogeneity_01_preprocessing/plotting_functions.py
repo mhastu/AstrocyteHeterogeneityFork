@@ -19,6 +19,7 @@ from scipy.stats import multivariate_normal
 from sklearn.metrics import silhouette_samples, silhouette_score
 import seaborn as sns
 
+import os
 import os.path as os_p
 
 from Cell import Cell
@@ -208,6 +209,8 @@ def plot_cell_rot(fig, cell, mode = "rough", ell = True):
     ax3.set_zticks([])
     ax4.view_init(0, 0)
     ax4.set_xticks([])
+    if not os_p.isdir("./CellPlots"):
+        os.mkdir("./CellPlots")
     plt.savefig(f"./CellPlots/{cell.cellID} 3D View plot {mode}.pdf")
 
 def plot_circle_3d(center, diameter, ax):
@@ -280,7 +283,15 @@ def plot_cell(ax, cell: Cell, color = "r", mode = "rough", plot_ell = False, plo
         ax.scatter(x, y, z) #, alpha = 1/(depth+ 1)
 
     if plot_ell:
-        x, y, z, V, rx, ry, rz = ellipse_params(cell.A , cell.c) 
+        try:
+            x, y, z, V, rx, ry, rz = ellipse_params(cell.A , cell.c) 
+        except AttributeError:
+            # run ellipsoid fitting
+            # The following code could probably run with parameters from EllipseParameters.csv,
+            # but V is not stored there and the code currently depends on V.
+            # TODO: fix this by implementing a consistent storing and loading of the ellipsoid parameters
+            cell._get_ellipsoid()
+            x, y, z, V, rx, ry, rz = ellipse_params(cell.A , cell.c)
         ax.plot_surface(x, y, z,  rstride=3, color = "b", cstride=3, linewidth=0.1, alpha=0.2, shade=True)
         #plot principal axes:
         point1 = np.array([0, 0, rz])
@@ -713,7 +724,9 @@ def MVEE_Results(datasets: list[str], **kwargs):
         plot_cell_rot(fig, random_cell)
         fig.suptitle(f"Cell {random_cell_id} with bounding ellipsoid")
         fig.tight_layout()
-    fig.savefig("./ResultPlots_" + dataset + "/MVEE_CellRot")
+        if not os_p.isdir("./ResultPlots_" + dataset):
+            os.mkdir("./ResultPlots_" + dataset)
+        fig.savefig("./ResultPlots_" + dataset + "/MVEE_CellRot")
 
 def EdgeCellRemoval(main): #PLT FKT
     #Methods figure--------------------

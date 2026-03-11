@@ -37,10 +37,10 @@ class CellsData:
         self.dataset = dataset
         print("Loading Data...")
         # pymatreader ignores matlab tables, so we have to save them as csv in matlab first, then load them here:
-        with open(os_p.join(path + "diameterData.csv")) as data:
+        with open(os_p.join(path, "diameterData.csv")) as data:
             self.diaData = pd.read_csv(data)
 
-        with open(path + "positionData.csv") as data:
+        with open(os_p.join(path, "positionData.csv")) as data:
             self.BranchingPointData = pd.read_csv(data)
         #display(self.BranchingPointData)
         self.FPoints = read_mat(os_p.join(path, "matlab_and_excel_data.mat"))["vFilamentsPoints"]
@@ -234,7 +234,7 @@ class CellsData:
        
     def load_EllipsoidData_from_file(self):
         try:
-            self.Ellipse_params = pd.read_csv(self.path + "EllipseParameters.csv", sep = ",", index_col= 0)
+            self.Ellipse_params = pd.read_csv(os_p.join(self.path, "EllipseParameters.csv"), sep = ",", index_col= 0)
             
             for id, cell, in self.cells.items():
                 #print(id)
@@ -246,7 +246,7 @@ class CellsData:
             self.gen_Ellipsoids()
         
     def save_ellipsoids(self):
-        self.Ellipse_params.to_csv(self.path + "EllipseParameters.csv", sep = ",")
+        self.Ellipse_params.to_csv(os_p.join(self.path, "EllipseParameters.csv"), sep = ",")
  
     def gen_UniqueFeatureVectors(self, General = False, Branches = False, Shells = False,
                           Quadrants = False, step = 5, nr_shells = 20, start_radius = 5, depth = 4):
@@ -383,41 +383,41 @@ class CellsData:
         self.save_FeatureVector()
                 
     def save_FeatureVector(self):
-        self.FeatureVector.to_csv(self.path + "FeatureVector.csv", sep = ",")
+        self.FeatureVector.to_csv(os_p.join(self.path, "FeatureVector.csv"), sep = ",")
     
     def save_Shell_FeatureVector(self):
-        self.Shell_FeatureVector.to_csv(self.path + "Shell_FeatureVector.csv", sep = ",")
+        self.Shell_FeatureVector.to_csv(os_p.join(self.path, "Shell_FeatureVector.csv"), sep = ",")
     
     def save_Quadrant_FeatureVector(self):
-        self.Quadrant_FeatureVector.to_csv(self.path + "Quadrant_FeatureVector.csv", sep = ",")
+        self.Quadrant_FeatureVector.to_csv(os_p.join(self.path, "Quadrant_FeatureVector.csv"), sep = ",")
 
     def save_Branch_FeatureVector(self):
-        self.Branch_FeatureVector.to_csv(self.path + "Branch_FeatureVector.csv", sep = ",")
+        self.Branch_FeatureVector.to_csv(os_p.join(self.path, "Branch_FeatureVector.csv"), sep = ",")
 
     def load_Shell_FeatureVector(self):
         try:
-            self.Shell_FeatureVector = pd.read_csv(self.path + "Shell_FeatureVector.csv", sep = ",", index_col= 0)
+            self.Shell_FeatureVector = pd.read_csv(os_p.join(self.path, "Shell_FeatureVector.csv"), sep = ",", index_col= 0)
             # Load configuration file values
         except FileNotFoundError:
             self.gen_UniqueFeatureVectors(Shells= True)
             
     def load_Branch_FeatureVector(self):
         try:
-            self.Branch_FeatureVector = pd.read_csv(self.path + "Branch_FeatureVector.csv", sep = ",", index_col= 0)
+            self.Branch_FeatureVector = pd.read_csv(os_p.join(self.path, "Branch_FeatureVector.csv"), sep = ",", index_col= 0)
             # Load configuration file values
         except FileNotFoundError:
             self.gen_UniqueFeatureVectors(Branches= True)
 
     def load_Quadrant_FeatureVector(self):
         try:
-            self.Quadrant_FeatureVector = pd.read_csv(self.path + "Quadrant_FeatureVector.csv", sep = ",", index_col= 0)
+            self.Quadrant_FeatureVector = pd.read_csv(os_p.join(self.path, "Quadrant_FeatureVector.csv"), sep = ",", index_col= 0)
             # Load configuration file values
         except FileNotFoundError:           
             self.gen_UniqueFeatureVectors(Quadrants= True)
 
     def load_FeatureVector(self, **kwargs):
         try:
-            self.FeatureVector = pd.read_csv(self.path + "FeatureVector.csv", sep = ",")
+            self.FeatureVector = pd.read_csv(os_p.join(self.path, "FeatureVector.csv"), sep = ",")
             # Load configuration file values
         except FileNotFoundError:           
             self.gen_UniqueFeatureVectors(General = True, **kwargs)
