@@ -1,6 +1,10 @@
 # vs code
 settings.json
 
+# outputs
+AstrocyteHeterogeneity_01_preprocessing/CellPlots/*
+AstrocyteHeterogeneity_01_preprocessing/ResultPlots_H00/*
+
 # data files
 diameterData.csv
 positionData.csv
