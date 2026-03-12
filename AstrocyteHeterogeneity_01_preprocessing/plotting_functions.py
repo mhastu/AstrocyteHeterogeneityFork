@@ -283,21 +283,34 @@ def plot_cell(ax, cell: Cell, color = "r", mode = "rough", plot_ell = False, plo
         ax.scatter(x, y, z) #, alpha = 1/(depth+ 1)
 
     if plot_ell:
-        try:
-            x, y, z, V, rx, ry, rz = ellipse_params(cell.A , cell.c) 
-        except AttributeError:
-            # run ellipsoid fitting
-            # The following code could probably run with parameters from EllipseParameters.csv,
-            # but V is not stored there and the code currently depends on V.
-            # TODO: fix this by implementing a consistent storing and loading of the ellipsoid parameters
-            cell._get_ellipsoid()
-            x, y, z, V, rx, ry, rz = ellipse_params(cell.A , cell.c)
+        rx, ry, rz, angle0, angle1, angle2, center0, center1, center2 = cell.ell_params
+        cent = np.array([center0, center1, center2])
+        V = R.from_euler("xyz", [angle0, angle1, angle2], degrees=True).as_matrix()
+
+        # parameter grid
+        u = np.linspace(0, 2 * np.pi, 60)
+        v = np.linspace(0, np.pi, 60)
+
+        # ellipsoid in local coordinates
+        x = rx * np.outer(np.cos(u), np.sin(v))
+        y = ry * np.outer(np.sin(u), np.sin(v))
+        z = rz * np.outer(np.ones_like(u), np.cos(v))
+
+        # stack and transform all points at once
+        xyz = np.stack((x, y, z), axis=-1)          # shape (60, 60, 3)
+        xyz_rot = xyz @ V + cent                    # rotate + translate
+
+        x = xyz_rot[..., 0]
+        y = xyz_rot[..., 1]
+        z = xyz_rot[..., 2]
+    
         ax.plot_surface(x, y, z,  rstride=3, color = "b", cstride=3, linewidth=0.1, alpha=0.2, shade=True)
+
         #plot principal axes:
         point1 = np.array([0, 0, rz])
         point2 = np.array([0, ry, 0])
         point3 = np.array([rx, 0, 0])
-        cent = cell.c
+
         point_rot1 = np.dot(point1, V) + cent
         point_rot2 = np.dot(point2, V) + cent
         point_rot3 = np.dot(point3, V) + cent
@@ -715,7 +728,8 @@ def MVEE_Results(datasets: list[str], **kwargs):
         # (even though we don't need features here)
         cells = CellsData(os_p.join(path,  dataset + "/"),
                           dataset,
-                          Features_to_use = [False, False, False, False],
+                          Features_to_use = [False]*4,
+                          Features_to_reload = [False]*4,
                           Ellipsoids = True,
                           **kwargs).cells
         random_cell_id, random_cell = random.choice(list(cells.items()))
